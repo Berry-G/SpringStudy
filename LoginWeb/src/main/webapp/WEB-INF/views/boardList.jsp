@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="loginout" value="${sessionScope.id==null ? 'Login' : 'Logout'}"></c:set>
+<c:set var="loginoutlink" value="${sessionScope.id==null ? '/login/login' : '/login/logout'}"/>
 
 <!DOCTYPE html>
 <html>
@@ -14,13 +16,15 @@
   <body>
 
      <div id="menu">
-      <ul>
-         <li id="logo">ezen</li>
-         <li><a href="<c:url value='/'/>">Home</a></li>
-         <li><a href="<c:url value='/board/list'/>">Board</a></li>
-         <li><a href="<c:url value='/login/login'/>">Login</a></li>
-         <li><a href="<c:url value='/register/add'/>">SignUp</a></li>
-      </ul>
+        <ul>
+            <li id="logo">ezen</li>
+            <li><a href="<c:url value='/' />">Home</a></li>
+            <li><a href="<c:url value='/board/list' />">Board</a></li>
+            <li><a href="<c:url value='/time' />">Time</a></li>
+            <li><a href="<c:url value='${loginoutlink}' />">${loginout}</a></li>
+            <li><a href="<c:url value='/register/add' />">SignUp</a></li>
+            <li><a href=""><i class="fas fa-search small"></i></a></li>
+        </ul>
    </div>
    <div style="text-align:center;">
       <h2>당신의 건강에 대한 보다 큰 그림</h2>

@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page session="false" %>
+<%-- <%@ page session="false" %> --%>
+<c:set var="loginout" value="${sessionScope.id==null ? 'Login' : 'Logout'}"></c:set>
+<c:set var="loginoutlink" value="${sessionScope.id==null ? '/login/login' : '/login/logout'}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,8 +24,9 @@
             <li><a href="<c:url value='/' />">Home</a></li>
             <li><a href="<c:url value='/board/list' />">Board</a></li>
             <li><a href="<c:url value='/time' />">Time</a></li>
-            <li><a href="<c:url value='/login/login' />">login</a></li>
+            <li><a href="<c:url value='${loginoutlink}' />">${loginout}</a></li>
             <li><a href="<c:url value='/register/add' />">SignUp</a></li>
+            <li><a href=""><i class="fas fa-search small"></i></a></li>
         </ul>
     </div>
     <div style="text-align: center;">
