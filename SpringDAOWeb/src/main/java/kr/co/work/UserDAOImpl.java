@@ -84,7 +84,7 @@ public class UserDAOImpl implements UserDAO
 		try
 		{
 	         conn = ds.getConnection();
-	         conn.prepareStatement(sql);
+	         pstmt = conn.prepareStatement(sql);
 	         pstmt.setString(1, user.getUser_id());
 	         pstmt.setString(2,  user.getUser_pw());
 	         pstmt.setString(3, user.getUser_name());
