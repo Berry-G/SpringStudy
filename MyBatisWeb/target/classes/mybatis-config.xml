@@ -9,6 +9,4 @@
 		<typeAlias alias="BoardDto" type="kr.co.heart.domain.BoardDto" />
 	</typeAliases>
 
-</configuration>  
-  
-  
+</configuration>

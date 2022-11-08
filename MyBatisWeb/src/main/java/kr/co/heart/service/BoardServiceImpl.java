@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import kr.co.heart.dao.BoardDao;
 import kr.co.heart.domain.BoardDto;
 
+@Service
 public class BoardServiceImpl implements BoardService
 {
 	@Autowired(required=false)

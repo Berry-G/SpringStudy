@@ -1,13 +1,13 @@
 package kr.co.heart;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import kr.co.heart.domain.PageResolver;
 
-public class PageResolverTest
-{
+public class PageResolverTest {
 	
 	@Test
 	public void test() {
@@ -43,5 +43,22 @@ public class PageResolverTest
 		assertTrue(pr.getBeginPage() == 21);
 		assertTrue(pr.getEndPage() == 26);
 	}
-
+	
+	@Test
+	public void test4() {
+		PageResolver pr = new PageResolver(255, 10);
+		pr.print();
+		System.out.println("pr = " + pr);
+		System.out.println();
+		
+		assertTrue(pr.getBeginPage() == 11);
+		assertTrue(pr.getEndPage() == 20);
+	}	
 }
+
+
+
+
+
+
+

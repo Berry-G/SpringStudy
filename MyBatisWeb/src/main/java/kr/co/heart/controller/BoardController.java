@@ -44,34 +44,34 @@ public class BoardController
 	
 	@GetMapping("/list")
 	public String list(@RequestParam(defaultValue = "1") Integer page,
-			@RequestParam(defaultValue = "10") Integer pageSize,
-			Model m,
-			HttpServletRequest request)
+						@RequestParam(defaultValue = "10") Integer pageSize,
+						Model m,
+						HttpServletRequest request)
 	{
 		if(!loginCheck(request))
 			return "redirect:/login/login?toURL=" + request.getRequestURL();
+		
 		try {
 			int totalCnt = boardService.getCount();
 			m.addAttribute("totalCnt", totalCnt);
 			
 			PageResolver pageResolver = new PageResolver(totalCnt, page, pageSize);
-			if(page < 0 || page > pageResolver.getTotalCnt())
+			if (page < 0 || page > pageResolver.getTotalCnt()) 
 				page = 1;
-			if(pageSize < 0 || pageSize > 50)
-				page = 10;
+			if (pageSize < 0 || pageSize > 50) 
+				pageSize = 10;
 			
 			Map map = new HashMap();
 			map.put("offset", (page-1)*pageSize);
 			map.put("pageSize", pageSize);
 			
 			List<BoardDto> list = boardService.getPage(map);
-			
 			m.addAttribute("list", list);
 			m.addAttribute("pr", pageResolver);
 			
 			
-		} catch (Exception e) {
-			e.printStackTrace();// TODO: handle exception
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 		return "boardList";	//로그인한 상태, 게시판 목록 화면으로 이동
@@ -79,9 +79,9 @@ public class BoardController
 
 	private boolean loginCheck(HttpServletRequest request)
 	{
-		//1. 세션을 얻어서
-		HttpSession session = request.getSession(false);
-		//2. session에 id가 있는지 확인, 있으면 true 반환
+		// 1. 세션을 얻어서
+		HttpSession session = request.getSession(false);		// false는 session이 없어도 새로 생성하지 않음. 반환값 null
+		// 2. 세션에 id가 있는지 확인, 있으면 true를 반환
 		return session != null && session.getAttribute("id")!=null;
 	}
 }
