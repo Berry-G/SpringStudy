@@ -21,6 +21,11 @@
 	<delete id="deleteAll">
 		delete from t_board
 	</delete>
+	
+	<delete id="delete" parameterType="map">
+		delete from t_board
+		where bno = #{bno} and writer = #{writer}
+	</delete>
 
 	<insert id="insert" parameterType="BoardDto">
 		INSERT INTO t_board

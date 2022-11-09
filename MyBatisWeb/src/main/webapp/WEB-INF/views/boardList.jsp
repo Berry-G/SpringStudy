@@ -121,14 +121,15 @@
 	</div>
 	
 	<script type="text/javascript">
-	
-	</script>	
+		let msg = "${msg}"
+		if(msg == "DEL_OK") alert("성공적으로 삭제되었습니다.")
+		if(msg == "DEL_ERR") alert("삭제되었거나 없는 게시물입니다.")
+	</script>
 	
 	<div style="text-align: center;">
 		<div class="board-container">
 			<div class="search-container">
 				<form action="">
-				
 				</form>
 			</div>
 		
@@ -145,7 +146,7 @@
 					<tr>
 						<td class="no">${boardDto.bno }</td>
 						<td class="title">
-							<a href="<c:url value="/board/read?bno=${boardDto.bno }" />">
+							<a href="<c:url value="/board/read?bno=${boardDto.bno }&page=${page }&pageSize=${pageSize }" />">
 								${boardDto.title }
 							</a>
 						</td>

@@ -76,11 +76,38 @@
 			<li><a href=""><i class="fa fa-search small"></i></a></li>
 		</ul>
 	</div>
-	
+
 	<script type="text/javascript">
+	$(document)
+	.ready(
+			function()
+			{ /* main() */
+				$("#listBtn")
+				.on(
+						"click",
+						function()
+						{
+							location.href = "<c:url value='/board/list?page=${page}&pageSize=${pageSize}' />";
+						}
+					)
+				$("#removeBtn")
+				.on(
+						"click",
+						function() 
+						{
+							if (!confirm("정말로 삭제하시겠습니까?"))
+								return;
 	
+							let form = $("#form")
+							form.attr("action", "<c:url value='/board/remove?page=${page}&pageSize=${pageSize}' />")
+							form.attr("method", "post")
+							form.submit()
+						}
+					)
+			}
+		)
 	</script>
-	
+
 	<div class="container">
 		<h2 class="writing-header">게시판 ${mode=="new" ? "글쓰기" : "읽기" }</h2>
 		<form id="form" class="frm" action="" method="post">
