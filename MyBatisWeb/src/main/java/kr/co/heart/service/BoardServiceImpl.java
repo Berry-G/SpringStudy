@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.heart.dao.BoardDao;
+import kr.co.heart.dao.SearchItem;
 import kr.co.heart.domain.BoardDto;
 
 @Service
@@ -42,4 +43,32 @@ public class BoardServiceImpl implements BoardService
 		
 		return boardDao.delete(bno, writer);
 	}
+
+	@Override
+	public int write(BoardDto boardDto) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return boardDao.insert(boardDto);
+	}
+	
+	@Override
+	public int modify(BoardDto boardDto) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDao.update(boardDto);
+	}
+
+	@Override
+	public int getSearchResultCnt(SearchItem sc) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return boardDao.searchResultCnt(sc);
+	}
+
+	@Override
+	public List<BoardDto> getSearchResultPage(SearchItem sc) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return  boardDao.searchSelectPage(sc);
+	}
+	
 }

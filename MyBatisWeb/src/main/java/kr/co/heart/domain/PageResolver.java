@@ -1,123 +1,161 @@
 package kr.co.heart.domain;
 
+import kr.co.heart.dao.SearchItem;
+
 public class PageResolver
 {
-	private int totalCnt;				//게시물 총 갯수
-	private int pageSize = 10;			//한 페이지 당 게시물 갯수
-	public final int NAV_SIZE = 10;		//page navigation size
-	
-	private int totalPage;				//전체 페이지 갯수
-	private int page;					//현재 페이지
-	
-	private int beginPage;				//화면에 보여줄 첫 페이지
-	private int endPage;				//화면에 보여줄 마지막 페이지
-	private boolean showNext = false;	//이후를 보여줄 지 여부 (endpage == totalpage => false)
-	private boolean showPrev = false;	//이전을 보여줄 지 여부 (beginpage != 1 => showprev = true)
-	
+	private int totalCnt; // 게시물 총 갯수
+	private int pageSize = 10; // 한 페이지 당 게시물 갯수
+	public final int NAV_SIZE = 10; // page navigation size
+
+	private int totalPage; // 전체 페이지 갯수
+	private int page; // 현재 페이지
+
+	private int beginPage; // 화면에 보여줄 첫 페이지
+	private int endPage; // 화면에 보여줄 마지막 페이지
+	private boolean showNext = false; // 이후를 보여줄 지 여부 (endpage == totalpage => false)
+	private boolean showPrev = false; // 이전을 보여줄 지 여부 (beginpage != 1 => showprev = true)
+
 	public PageResolver(int totalCnt, Integer page)
 	{
-		this(totalCnt, page, 10);
+		this(totalCnt, new SearchItem(page, 10));
+	}
+
+//	public PageResolver(int totalCnt, Integer page, Integer pageSize)
+//	{
+//		this.totalCnt = totalCnt;
+//		this.page = page;
+//		this.pageSize = pageSize;
+//
+//		this.totalPage = (int) Math.ceil((double) totalCnt / pageSize); // 전체 페이지 갯수
+//		this.beginPage = page / NAV_SIZE * NAV_SIZE + 1; // 첫 페이지 숫자'
+//		this.endPage = Math.min(this.beginPage + this.NAV_SIZE - 1, totalPage);
+//		this.showPrev = beginPage != 1;
+//		this.showNext = endPage != totalPage;
+//	}
+//	
+	public PageResolver(int totalCnt, SearchItem sc)
+	{
+		this.totalCnt = totalCnt;
+		this.sc = sc;
+		
+		doPaging(totalCnt, sc);
 	}
 	
-	   public PageResolver(int totalCnt, Integer page, Integer pageSize) {
-		      this.totalCnt =totalCnt;
-		      this.page = page;
-		      this.pageSize = pageSize;
-		      
-		      this.totalPage = (int)Math.ceil((double)totalCnt/pageSize);      //전체 페이지 갯수
-		      this.beginPage = page / NAV_SIZE * NAV_SIZE +1 ;      //첫 페이지 숫자'
-		      this.endPage = Math.min(this.beginPage + this.NAV_SIZE -1, totalPage);
-		      this.showPrev = beginPage != 1;
-		      this.showNext = endPage != totalPage;
-		   }
-		   
-		   public void print() {
-		      System.out.println("page = " + page);
-		      System.out.print( showPrev ? "PREV " : "");
-		      
-		      for(int i = beginPage; i <=endPage ; i++) {
-		         System.out.print(i + " ");
-		      }
-		      
-		      System.out.println(showNext ? "NEXT" : "");
-		      
-		   }
+	public void doPaging(int totalCnt, SearchItem sc)
+	{
+		this.totalPage = (int)Math.ceil(totalCnt / (double)getPageSize());
+		this.beginPage = (getPage()-1) / NAV_SIZE * NAV_SIZE + 1;
+		this.endPage = Math.min(this.beginPage + this.NAV_SIZE - 1, totalPage);
+		this.showPrev = beginPage != 1;
+		this.showNext = endPage != totalPage;
+	}
 
-		   @Override
-		   public String toString() {
-		      return "PageResolver [totalCnt=" + totalCnt + ", pageSize=" + pageSize + ", NAV_SIZE=" + NAV_SIZE
-		            + ", totalPage=" + totalPage + ", page=" + page + ", beginPage=" + beginPage + ", endPage=" + endPage
-		            + ", showNext=" + showNext + ", showPrev=" + showPrev + "]";
-		   }
+	public void print()
+	{
+		System.out.println("page = " + page);
+		System.out.print(showPrev ? "PREV " : "");
 
-		   public int getTotalCnt() {
-		      return totalCnt;
-		   }
+		for (int i = beginPage; i <= endPage; i++)
+		{
+			System.out.print(i + " ");
+		}
 
-		   public void setTotalCnt(int totalCnt) {
-		      this.totalCnt = totalCnt;
-		   }
+		System.out.println(showNext ? "NEXT" : "");
 
-		   public int getPageSize() {
-		      return pageSize;
-		   }
+	}
 
-		   public void setPageSize(int pageSize) {
-		      this.pageSize = pageSize;
-		   }
+	@Override
+	public String toString()
+	{
+		return "PageResolver [totalCnt=" + totalCnt + ", pageSize=" + pageSize + ", NAV_SIZE=" + NAV_SIZE
+				+ ", totalPage=" + totalPage + ", page=" + page + ", beginPage=" + beginPage + ", endPage=" + endPage
+				+ ", showNext=" + showNext + ", showPrev=" + showPrev + "]";
+	}
 
-		   public int getTotalPage() {
-		      return totalPage;
-		   }
+	public int getTotalCnt()
+	{
+		return totalCnt;
+	}
 
-		   public void setTotalPage(int totalPage) {
-		      this.totalPage = totalPage;
-		   }
+	public void setTotalCnt(int totalCnt)
+	{
+		this.totalCnt = totalCnt;
+	}
 
-		   public int getPage() {
-		      return page;
-		   }
+	public int getPageSize()
+	{
+		return pageSize;
+	}
 
-		   public void setPage(int page) {
-		      this.page = page;
-		   }
+	public void setPageSize(int pageSize)
+	{
+		this.pageSize = pageSize;
+	}
 
-		   public int getBeginPage() {
-		      return beginPage;
-		   }
+	public int getTotalPage()
+	{
+		return totalPage;
+	}
 
-		   public void setBeginPage(int beginPage) {
-		      this.beginPage = beginPage;
-		   }
+	public void setTotalPage(int totalPage)
+	{
+		this.totalPage = totalPage;
+	}
 
-		   public int getEndPage() {
-		      return endPage;
-		   }
+	public int getPage()
+	{
+		return page;
+	}
 
-		   public void setEndPage(int endPage) {
-		      this.endPage = endPage;
-		   }
+	public void setPage(int page)
+	{
+		this.page = page;
+	}
 
-		   public boolean isShowNext() {
-		      return showNext;
-		   }
+	public int getBeginPage()
+	{
+		return beginPage;
+	}
 
-		   public void setShowNext(boolean showNext) {
-		      this.showNext = showNext;
-		   }
+	public void setBeginPage(int beginPage)
+	{
+		this.beginPage = beginPage;
+	}
 
-		   public boolean isShowPrev() {
-		      return showPrev;
-		   }
+	public int getEndPage()
+	{
+		return endPage;
+	}
 
-		   public void setShowPrev(boolean showPrev) {
-		      this.showPrev = showPrev;
-		   }
+	public void setEndPage(int endPage)
+	{
+		this.endPage = endPage;
+	}
 
-		   public int getNAV_SIZE() {
-		      return NAV_SIZE;
-		   }
+	public boolean isShowNext()
+	{
+		return showNext;
+	}
 
-	
+	public void setShowNext(boolean showNext)
+	{
+		this.showNext = showNext;
+	}
+
+	public boolean isShowPrev()
+	{
+		return showPrev;
+	}
+
+	public void setShowPrev(boolean showPrev)
+	{
+		this.showPrev = showPrev;
+	}
+
+	public int getNAV_SIZE()
+	{
+		return NAV_SIZE;
+	}
 
 }

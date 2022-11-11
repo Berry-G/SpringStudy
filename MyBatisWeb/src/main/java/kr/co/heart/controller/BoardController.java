@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.heart.dao.SearchItem;
 import kr.co.heart.domain.BoardDto;
 import kr.co.heart.domain.PageResolver;
 import kr.co.heart.service.BoardService;
@@ -26,6 +27,63 @@ public class BoardController
 {
 	@Autowired(required = false)
 	BoardService boardService;
+	
+	@PostMapping("/modify")
+	public String modify(BoardDto boardDto, Integer page, Integer pageSize, 
+						RedirectAttributes rattr, Model m, HttpSession session) {
+		String writer = (String) session.getAttribute("id");
+		boardDto.setWriter(writer);
+		
+		try {
+			if(boardService.modify(boardDto) != 1)
+				throw new Exception("Modify failed");
+			
+			rattr.addAttribute("page", page);
+			rattr.addAttribute("pageSize", pageSize);
+			rattr.addFlashAttribute("msg", "MOD_OK");
+			return "redirect:/board/list";
+		} catch(Exception e) {
+			e.printStackTrace();
+			m.addAttribute(boardDto);
+			m.addAttribute("page", page);
+			m.addAttribute("pageSize", pageSize);
+			m.addAttribute("msg", "MOD_ERR");
+			return "board";			// 수정등록하려던 내용을 보여줌
+		}
+		
+	}
+	
+	@PostMapping("/write")
+	public String write(BoardDto boardDto, RedirectAttributes rattr, Model m, HttpSession session)
+	{
+		String writer = (String) session.getAttribute("id");
+		boardDto.setWriter(writer);
+		
+		try
+		{
+			if(boardService.write(boardDto) != 1)
+				throw new Exception("Write failed");
+			
+			rattr.addFlashAttribute("msg", "WRT_OK");
+			return "redirect:/board/list";
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			m.addAttribute("mode", "new");
+			m.addAttribute("boardDto", boardDto);
+			m.addAttribute("msg", "WRT_ERR");
+			return "board";
+		}
+	}
+	
+	@GetMapping("/write")
+	public String write(Model m)
+	{
+		m.addAttribute("mode", "new");
+		
+		return "board";		//board.jsp에 읽기와 쓰기에 사용. 쓰기에 사용할때는 모드를 new로 사용하겠다.
+	}
 
 	@PostMapping("/remove")
 	public String remove(Integer bno, Integer page, Integer pageSize, 
@@ -66,8 +124,10 @@ public class BoardController
 	}
 	
 	@GetMapping("/list")
-	public String list(@RequestParam(defaultValue = "1") Integer page,
-						@RequestParam(defaultValue = "10") Integer pageSize,
+	public String list(
+//			@RequestParam(defaultValue = "1") Integer page,
+//						@RequestParam(defaultValue = "10") Integer pageSize,
+						SearchItem sc,
 						Model m,
 						HttpServletRequest request)
 	{
@@ -78,17 +138,18 @@ public class BoardController
 			int totalCnt = boardService.getCount();
 			m.addAttribute("totalCnt", totalCnt);
 			
-			PageResolver pageResolver = new PageResolver(totalCnt, page, pageSize);
-			if (page < 0 || page > pageResolver.getTotalCnt()) 
-				page = 1;
-			if (pageSize < 0 || pageSize > 50) 
-				pageSize = 10;
-			
-			Map map = new HashMap();
-			map.put("offset", (page-1)*pageSize);
-			map.put("pageSize", pageSize);
-			
-			List<BoardDto> list = boardService.getPage(map);
+//			PageResolver pageResolver = new PageResolver(totalCnt, sc);
+//			if (page < 0 || page > pageResolver.getTotalCnt()) 
+//				page = 1;
+//			if (pageSize < 0 || pageSize > 50) 
+//				pageSize = 10;
+//			
+//			Map map = new HashMap();
+//			map.put("offset", (page-1)*pageSize);
+//			map.put("pageSize", pageSize);
+//			
+//			
+			List<BoardDto> list = boardService.getPage(sc);
 			m.addAttribute("list", list);
 			m.addAttribute("pr", pageResolver);
 			
