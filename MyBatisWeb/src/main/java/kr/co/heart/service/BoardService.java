@@ -3,8 +3,8 @@ package kr.co.heart.service;
 import java.util.List;
 import java.util.Map;
 
-import kr.co.heart.dao.SearchItem;
 import kr.co.heart.domain.BoardDto;
+import kr.co.heart.domain.SearchItem;
 
 public interface BoardService
 {

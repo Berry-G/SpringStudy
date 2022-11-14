@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.co.heart.domain.BoardDto;
+import kr.co.heart.domain.SearchItem;
 
 public interface BoardDao
 {

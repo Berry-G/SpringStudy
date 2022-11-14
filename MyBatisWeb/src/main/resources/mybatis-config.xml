@@ -7,6 +7,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="BoardDto" type="kr.co.heart.domain.BoardDto" />
+		<typeAlias alias="SearchItem" type="kr.co.heart.domain.SearchItem" />
+		
 	</typeAliases>
 
 </configuration>

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.heart.dao.BoardDao;
-import kr.co.heart.dao.SearchItem;
 import kr.co.heart.domain.BoardDto;
+import kr.co.heart.domain.SearchItem;
 
 @Service
 public class BoardServiceImpl implements BoardService
@@ -32,7 +32,7 @@ public class BoardServiceImpl implements BoardService
 	public BoardDto read(Integer bno) throws Exception
 	{
 		BoardDto boardDto = boardDao.select(bno);
-		
+		//비즈니스 로직추가(조회수 증가)
 		boardDao.increaseViewCnt(bno);
 		
 		return boardDto;

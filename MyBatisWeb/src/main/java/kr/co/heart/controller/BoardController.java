@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.heart.dao.SearchItem;
 import kr.co.heart.domain.BoardDto;
 import kr.co.heart.domain.PageResolver;
+import kr.co.heart.domain.SearchItem;
 import kr.co.heart.service.BoardService;
 
 @Controller
@@ -53,6 +53,13 @@ public class BoardController
 		
 	}
 	
+	@GetMapping("/write")
+	public String write(Model m) {
+		m.addAttribute("mode", "new");
+		
+		return "board";			// board.jsp 읽기와 쓰기에 사용. 쓰기에 사용할때는 mode=new
+	}
+	
 	@PostMapping("/write")
 	public String write(BoardDto boardDto, RedirectAttributes rattr, Model m, HttpSession session)
 	{
@@ -77,14 +84,6 @@ public class BoardController
 		}
 	}
 	
-	@GetMapping("/write")
-	public String write(Model m)
-	{
-		m.addAttribute("mode", "new");
-		
-		return "board";		//board.jsp에 읽기와 쓰기에 사용. 쓰기에 사용할때는 모드를 new로 사용하겠다.
-	}
-
 	@PostMapping("/remove")
 	public String remove(Integer bno, Integer page, Integer pageSize, 
 						RedirectAttributes rattr, HttpSession session) {
@@ -107,19 +106,19 @@ public class BoardController
 	}
 	
 	@GetMapping("/read")
-	public String read(Integer bno, Integer page, Integer pageSize, Model m)
-	{
+	public String read(Integer bno, Integer page, Integer pageSize, Model m) {
 		try {
 			BoardDto boardDto = boardService.read(bno);
-			
+			//m.addAttribute("boardDto", boardDto); 		//아래 문장과 동일
 			m.addAttribute(boardDto);
+			m.addAttribute("page", page);
+			m.addAttribute("pageSize", pageSize);
 			
-		}
-		catch (Exception e) {
-			// TODO: handle exception
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "redirect:/board/list";
 		}
+		
 		return "board";
 	}
 	
@@ -138,7 +137,7 @@ public class BoardController
 			int totalCnt = boardService.getCount();
 			m.addAttribute("totalCnt", totalCnt);
 			
-//			PageResolver pageResolver = new PageResolver(totalCnt, sc);
+			PageResolver pageResolver = new PageResolver(totalCnt, sc);
 //			if (page < 0 || page > pageResolver.getTotalCnt()) 
 //				page = 1;
 //			if (pageSize < 0 || pageSize > 50) 
@@ -149,7 +148,7 @@ public class BoardController
 //			map.put("pageSize", pageSize);
 //			
 //			
-			List<BoardDto> list = boardService.getPage(sc);
+			List<BoardDto> list = boardService.getSearchResultPage(sc);
 			m.addAttribute("list", list);
 			m.addAttribute("pr", pageResolver);
 			
